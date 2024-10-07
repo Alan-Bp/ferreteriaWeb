@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferrem - Tu ferretería confiable</title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">
+            <img src="./assets/logo.png" alt="Logo de Ferrem">
+        </div>
+        <ul class="nav-links">
+            <li><a href="#catalogo">Catálogo</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <!-- Barra de búsqueda -->
+    <section class="search-bar">
+        <button class="department-btn">Departamento</button>
+        <input type="text" placeholder="Buscar productos por ID o nombre...">
+        <button class="search-btn"><img src="./assets/search-icon.png" alt="Buscar"></button>
+    </section>
+
+    <!-- Hero Section con Banner -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Bienvenido a Ferrem</h1>
+            <p>Encuentra todo lo que necesitas para tus proyectos.</p>
+        </div>
+        <div class="hero-banner">
+            <img src="./assets/banner.jpg" alt="Promoción principal">
+        </div>
+    </section>
+
+    <!-- Catálogo Section -->
+    <section id="catalogo">
+        <h2>Catálogo de Productos</h2>
+        <div class="productos-grid">
+            <div class="product-card">
+                <h3>Producto 1</h3>
+                <p>Descripción detallada del producto 1.</p>
+                <span>$150.00 MXN</span>
+            </div>
+            <div class="product-card">
+                <h3>Producto 2</h3>
+                <p>Descripción detallada del producto 2.</p>
+                <span>$250.00 MXN</span>
+            </div>
+            <!-- Más productos -->
+        </div>
+    </section>
+
+    <!-- Contacto Section -->
+    <section id="contacto">
+        <h2>Contáctanos</h2>
+        <p>Para más información, envíanos un mensaje por <a href="https://wa.me/5290012345678" target="_blank">WhatsApp</a>.</p>
+    </section>
+
+    <script src="./js/scripts.js"></script>
+</body>
+</html>
