@@ -6,6 +6,9 @@ body {
     background-color: #f9f9f9;
     box-sizing: border-box;
     scroll-behavior: smooth; /* Desplazamiento suave */
+    display: flex;
+    flex-direction: column; /* Cambiar a columna para apilar secciones */
+    min-height: 100vh; /* Asegura que el cuerpo ocupe toda la altura de la ventana */
 }
 
 /* Barra de búsqueda */
@@ -13,63 +16,82 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
-    background-color: transparent; /* Fondo transparente */
-    margin-bottom: 10px;
+    padding: 15px; /* Mantener padding para que no quede muy pegado */
+    margin: 0 200px; /* Margen horizontal */
+    background-color: #e0e0e000; /* Fondo gris claro */
 }
 
 .search-bar input {
-    width: 300px;
-    padding: 10px;
+    flex-grow: 1; /* Permitir que el input crezca */
+    min-width: 150px; /* Ancho mínimo */
+    padding: 5px; /* Mantener el padding */
     font-size: 16px;
     border: 1px solid #ddd;
     outline: none;
-    border-radius: 4px;
-    height: 48px; /* Igualar la altura con los botones */
+    border-radius: 0; /* Esquinas cuadradas */
+    height: 30px; /* Mantener la altura */
+    margin: 0; /* Sin margen */
 }
 
 /* Botones de búsqueda */
-.search-bar .search-btn,
-.search-bar .department-btn {
-    background-color: #f48fb1; /* Color rosa */
-    color: white;
+.search-bar .search-btn {
+    background-color: #dd2f35; /* Color azul claro */
     border: none;
-    padding: 12px;
+    padding: 5px; /* Ajustar padding */
     cursor: pointer;
-    height: 48px; /* Igualar la altura */
+    height: 42px; /* Igualar altura */
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 0 4px 4px 0; /* Esquinas redondeadas solo en la derecha */
+    width: 40px; /* Ajustar el tamaño del botón */
 }
 
-.search-bar .search-btn img,
-.search-bar .department-btn img {
-    width: 24px;
-    height: 24px;
+.search-bar .department-btn {
+    background-color: #dd2f35; /* Color azul claro */
+    color: white; /* Texto en blanco */
+    font-weight: bold; /* Texto en negrita */
+    text-transform: uppercase; /* Texto en mayúsculas */
+    border: none;
+    padding: 20px; /* Ajustar padding */
+    cursor: pointer;
+    height: 42px; /* Igualar altura */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px 0 0 4px; /* Redondear solo el lado izquierdo */
+    margin-right: -1px; /* Eliminar separación con la barra de búsqueda */
 }
 
 /* Navbar */
 nav {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Espaciado entre elementos */
     align-items: center;
-    padding: 10px 20px;
-    background: linear-gradient(to right, #d1d1d1, #f9f9f9); /* Degradado plateado con blanco */
-    color: white;
+    padding: 5px 20px;
+    background: linear-gradient(to right, #ea161dbb, #ac3971d1); /* Degradado con el nuevo color */
 }
 
+nav .logo {
+    flex: 1; /* Permitir que el logo use el espacio disponible */
+    text-align: center; /* Centrar el logo */
+    margin-left: 200px;
+}
+
+
 nav .logo img {
-    width: 90px; /* Ajustar tamaño del logo */
+    width: 280px; /* Aumentar tamaño del logo */
 }
 
 nav .nav-links {
     list-style: none;
     display: flex;
+    margin-left: auto; /* Alinear los enlaces a la derecha */
     gap: 20px;
 }
 
 nav .nav-links li a {
-    color: #333; /* Color del texto más oscuro */
+    color: #eae1e1; /* Color del texto más oscuro */
     text-decoration: none;
     font-size: 18px;
 }
@@ -78,13 +100,13 @@ nav .nav-links li a {
 .hero-section {
     text-align: center;
     padding: 5px 20px; /* Reducida la altura */
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.7); /* Fondo transparente */
 }
 
 .hero-content h1 {
     font-size: 22px; /* Reducción del tamaño del texto */
     color: #333;
-    margin-bottom: 5px;
+    margin: 0; /* Sin margen */
 }
 
 .hero-content p {
@@ -95,7 +117,7 @@ nav .nav-links li a {
 /* Carrusel */
 .carousel {
     max-width: 100%;
-    height: 150px; /* Reducir más la altura del banner */
+    height: 300px; /* Reducir más la altura del banner */
     overflow: hidden;
     margin-bottom: 20px;
 }
@@ -119,6 +141,7 @@ nav .nav-links li a {
 #catalogo {
     padding: 40px 20px;
     background-color: #fafafa;
+    flex-shrink: 0; /* No permitir que se encoja */
 }
 
 #catalogo h2 {
@@ -145,12 +168,14 @@ nav .nav-links li a {
 /* Contacto */
 #contacto {
     padding: 40px 20px;
-    background-color: #e0e0e0;
+    color: #ffffff;
+    background: linear-gradient(to right, #ea161dbb, #ac3971d1); /* Degradado con el nuevo color */
     text-align: center;
+    flex-shrink: 0; /* No permitir que se encoja */
 }
 
 #contacto a {
-    color: #00796b;
+    color: #cad3d2;
     text-decoration: none;
 }
 
