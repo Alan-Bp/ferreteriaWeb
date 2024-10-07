@@ -10,7 +10,7 @@
     <!-- Navbar -->
     <nav>
         <div class="logo">
-            <img src="./assets/logo.png" alt="Logo de Ferrem">
+            <img src="./assets/logo.jpg" alt="Logo de Ferrem">
         </div>
         <ul class="nav-links">
             <li><a href="#catalogo">Catálogo</a></li>
@@ -18,21 +18,33 @@
         </ul>
     </nav>
 
-    <!-- Barra de búsqueda -->
-    <section class="search-bar">
-        <button class="department-btn">Departamento</button>
-        <input type="text" placeholder="Buscar productos por ID o nombre...">
-        <button class="search-btn"><img src="./assets/search-icon.png" alt="Buscar"></button>
-    </section>
-
-    <!-- Hero Section con Banner -->
+    <!-- Hero Section (Bienvenido a Ferrem) -->
     <section class="hero-section">
         <div class="hero-content">
             <h1>Bienvenido a Ferrem</h1>
             <p>Encuentra todo lo que necesitas para tus proyectos.</p>
         </div>
-        <div class="hero-banner">
-            <img src="./assets/banner.jpg" alt="Promoción principal">
+    </section>
+
+    <!-- Barra de búsqueda -->
+    <section class="search-bar">
+        <button class="department-btn"><img src="./assets/depto-icon.png" alt="Departamento"></button>
+        <input type="text" placeholder="Buscar productos por ID o nombre...">
+        <button class="search-btn"><img src="./assets/search.png" alt="Buscar"></button>
+    </section>
+
+    <!-- Carrusel de Promociones -->
+    <section class="carousel">
+        <div class="slides">
+            <div class="slide active">
+                <img src="./assets/banner1.jpg" alt="Promoción 1">
+            </div>
+            <div class="slide">
+                <img src="./assets/banner2.jpg" alt="Promoción 2">
+            </div>
+            <div class="slide">
+                <img src="./assets/banner3.jpg" alt="Promoción 3">
+            </div>
         </div>
     </section>
 
@@ -50,15 +62,21 @@
                 <p>Descripción detallada del producto 2.</p>
                 <span>$250.00 MXN</span>
             </div>
-            <!-- Más productos -->
         </div>
     </section>
 
     <!-- Contacto Section -->
     <section id="contacto">
         <h2>Contáctanos</h2>
-        <p>Para más información, envíanos un mensaje por <a href="https://wa.me/5290012345678" target="_blank">WhatsApp</a>.</p>
+        <p>Correo: Ferrem@gmail.com</p>
+        <p>Teléfono fijo: 555-888-1458</p>
+        <p>WhatsApp para cotizaciones: <a href="https://wa.me/5523277869" target="_blank">552-327-7869</a></p>
     </section>
+
+    <!-- Botón flotante de WhatsApp -->
+    <a href="https://wa.me/5523277869" target="_blank" class="whatsapp-float">
+        <img src="./assets/whatsapp-icon.png" alt="WhatsApp">
+    </a>
 
     <script src="./js/scripts.js"></script>
 </body>

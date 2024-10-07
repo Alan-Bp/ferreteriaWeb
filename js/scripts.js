@@ -1,11 +1,9 @@
 let currentSlide = 0;
-const slides = document.querySelectorAll('.banner-slider .slide');
-console.log("Página cargada correctamente.");
+const slides = document.querySelectorAll('.slide');
 
 function showSlide(index) {
     slides.forEach((slide, i) => {
-        slide.classList.remove('active');
-        if (i === index) slide.classList.add('active');
+        slide.style.transform = `translateX(${(i - index) * 100}%)`;
     });
 }
 
@@ -14,4 +12,6 @@ function nextSlide() {
     showSlide(currentSlide);
 }
 
-setInterval(nextSlide, 5000);
+setInterval(nextSlide, 5000); // Cambia de imagen cada 5 segundos
+
+showSlide(currentSlide);
