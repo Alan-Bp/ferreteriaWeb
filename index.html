@@ -6,12 +6,21 @@
     <title>Ferrem - Tu ferretería confiable</title>
     <link rel="stylesheet" href="./css/styles.css">
 </head>
+
 <body>
     <!-- Navbar -->
     <nav>
-        <div class="logo">
-            <img src="./assets/logo.jpg" alt="Logo de Ferrem">
+        <div class="top-row">
+            <div class="logo">
+                <img src="./assets/logo.png" alt="Logo de Ferrem">
+            </div>
+            <div class="search-bar">
+                <button class="department-btn">Departamento</button>
+                <input type="text" placeholder="Buscar productos...">
+                <button class="search-btn"><img src="./assets/search.png" alt="Buscar"></button>
+            </div>
         </div>
+        <!-- Segunda fila con los enlaces de navegación -->
         <ul class="nav-links">
             <li><a href="#catalogo">Catálogo</a></li>
             <li><a href="#contacto">Contacto</a></li>
@@ -26,24 +35,14 @@
         </div>
     </section>
 
-    <!-- Barra de búsqueda -->
-    <section class="search-bar">
-        <button class="department-btn">Departamento</button>
-        <input type="text" placeholder="Buscar productos por ID o nombre...">
-        <button class="search-btn"><img src="./assets/search.png" alt="Buscar"></button>
-    </section>
-
     <!-- Carrusel de Promociones -->
     <section class="carousel">
         <div class="slides">
             <div class="slide active">
-                <img src="./assets/banner1.jpg" alt="Promoción 1">
+                <img src="./assets/banner1.png" alt="Promoción 1">
             </div>
             <div class="slide">
-                <img src="./assets/banner2.jpg" alt="Promoción 2">
-            </div>
-            <div class="slide">
-                <img src="./assets/banner3.jpg" alt="Promoción 3">
+                <img src="./assets/banner2.png" alt="Promoción 2">
             </div>
         </div>
     </section>
@@ -78,6 +77,7 @@
         <img src="./assets/whatsapp-icon.png" alt="WhatsApp">
     </a>
 
+    <!-- Coloca los scripts aquí, justo antes de cerrar la etiqueta body -->
     <script src="./js/scripts.js"></script>
 </body>
 </html>
