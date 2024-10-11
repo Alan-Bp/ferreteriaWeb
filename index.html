@@ -50,17 +50,8 @@
     <!-- Catálogo Section -->
     <section id="catalogo">
         <h2>Catálogo de Productos</h2>
-        <div class="productos-grid">
-            <div class="product-card">
-                <h3>Producto 1</h3>
-                <p>Descripción detallada del producto 1.</p>
-                <span>$150.00 MXN</span>
-            </div>
-            <div class="product-card">
-                <h3>Producto 2</h3>
-                <p>Descripción detallada del producto 2.</p>
-                <span>$250.00 MXN</span>
-            </div>
+        <div class="productos-grid" id="productos">
+            <!-- Los productos se cargarán aquí dinámicamente -->
         </div>
     </section>
 
@@ -78,6 +69,29 @@
     </a>
 
     <!-- Coloca los scripts aquí, justo antes de cerrar la etiqueta body -->
-    <script src="./js/scripts.js"></script>
+    <script>
+        // Cargar productos desde la API
+        fetch('http://localhost:3000/api/products')
+            .then(response => response.json())
+            .then(data => {
+                const productosContainer = document.getElementById('productos');
+                // Asegúrate de que data.data esté definido y sea un array
+                if (data && data.data && Array.isArray(data.data)) {
+                    data.data.forEach(product => {
+                        productosContainer.innerHTML += `
+                            <div class="product-card">
+                                <img src="./assets/${product.ItemCode}.jpg" alt="${product.ItemName}" class="product-img">
+                                <h3>${product.ItemName}</h3>
+                                <p>${product.Description || 'Descripción no disponible.'}</p>
+                                <span>Precio: $${product.Price}</span>
+                            </div>`;
+                    });
+                } else {
+                    console.error('Error cargando productos:', error);
+                }
+            })
+            .catch(error => console.error('Error cargando productos:', error));
+    </script>
+    
 </body>
 </html>
