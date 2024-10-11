@@ -8,7 +8,7 @@ function showSlide(index) {
 }
 
 function nextSlide() {
-    currentSlide = (currentSlide + 1) % slides.length;
+    currentSlide = (currentSlide + 1) % slides.length; // Ciclo a través de las slides
     showSlide(currentSlide);
 }
 

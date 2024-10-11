@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,7 @@
     <nav>
         <div class="top-row">
             <div class="logo">
-                <img src="./assets/logo.png" alt="Logo de Ferrem">
+                <img src="./assets/logo.png" alt="Logo de Ferrem" id="logo">
             </div>
             <div class="search-bar">
                 <button class="department-btn">Departamento</button>
@@ -20,10 +21,9 @@
                 <button class="search-btn"><img src="./assets/search.png" alt="Buscar"></button>
             </div>
         </div>
-        <!-- Segunda fila con los enlaces de navegación -->
         <ul class="nav-links">
             <li><a href="#catalogo">Catálogo</a></li>
-            <li><a href="#contacto">Contacto</a></li>
+            <li><a href="#contacto" id="contact-link">Contacto</a></li>
         </ul>
     </nav>
 
@@ -42,7 +42,7 @@
                 <img src="./assets/banner1.png" alt="Promoción 1">
             </div>
             <div class="slide">
-                <img src="./assets/banner2.png" alt="Promoción 2">
+                <img src="./assets/banner2.jpg" alt="Promoción 2">
             </div>
         </div>
     </section>
@@ -50,13 +50,16 @@
     <!-- Catálogo Section -->
     <section id="catalogo">
         <h2>Catálogo de Productos</h2>
-        <div class="productos-grid" id="productos">
-            <!-- Los productos se cargarán aquí dinámicamente -->
+        <div class="productos-grid" id="productos"></div>
+
+        <!-- Botón para cargar más productos -->
+        <div style="text-align: center; margin: 20px 0;">
+            <button id="load-more" class="load-more-button">Mostrar más productos</button>
         </div>
     </section>
 
     <!-- Contacto Section -->
-    <section id="contacto">
+    <section id="contacto" style="text-align: center;">
         <h2>Contáctanos</h2>
         <p>Correo: Ferrem@gmail.com</p>
         <p>Teléfono fijo: 555-888-1458</p>
@@ -64,34 +67,81 @@
     </section>
 
     <!-- Botón flotante de WhatsApp -->
-    <a href="https://wa.me/5523277869" target="_blank" class="whatsapp-float">
+    <a href="https://wa.me/5523277869" target="_blank" class="whatsapp-float" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
         <img src="./assets/whatsapp-icon.png" alt="WhatsApp">
     </a>
 
     <!-- Coloca los scripts aquí, justo antes de cerrar la etiqueta body -->
     <script>
-        // Cargar productos desde la API
-        fetch('http://localhost:3000/api/products')
-            .then(response => response.json())
-            .then(data => {
-                const productosContainer = document.getElementById('productos');
-                // Asegúrate de que data.data esté definido y sea un array
-                if (data && data.data && Array.isArray(data.data)) {
-                    data.data.forEach(product => {
-                        productosContainer.innerHTML += `
-                            <div class="product-card">
-                                <img src="./assets/${product.ItemCode}.jpg" alt="${product.ItemName}" class="product-img">
-                                <h3>${product.ItemName}</h3>
-                                <p>${product.Description || 'Descripción no disponible.'}</p>
-                                <span>Precio: $${product.Price}</span>
-                            </div>`;
-                    });
-                } else {
-                    console.error('Error cargando productos:', error);
-                }
-            })
-            .catch(error => console.error('Error cargando productos:', error));
+        let currentCount = 0; // Contador de productos cargados
+        const loadCount = 20; // Número de productos a cargar por vez
+
+        // Función para cargar productos
+        function loadProducts() {
+            fetch('http://localhost:3000/api/products')
+                .then(response => response.json())
+                .then(data => {
+                    const productosContainer = document.getElementById('productos');
+                    if (data && data.data && Array.isArray(data.data)) {
+                        const productsToLoad = data.data.slice(currentCount, currentCount + loadCount);
+                        productsToLoad.forEach(product => {
+                            productosContainer.innerHTML += `
+                                <div class="product-card">
+                                    <img src="./assets/${product.ItemCode}.png" alt="${product.ItemName}" class="product-img">
+                                    <h3>${product.ItemName}</h3>
+                                    <p>${product.Description || 'Descripción no disponible.'}</p>
+                                    <span>Precio: $${product.Price.toFixed(2)}</span>
+                                </div>`;
+                        });
+                        currentCount += loadCount;
+
+                        // Ocultar el botón "Cargar más" si no hay más productos
+                        if (currentCount >= data.data.length) {
+                            document.getElementById('load-more').style.display = 'none';
+                        }
+                    } else {
+                        console.error('Error cargando productos:', data);
+                    }
+                })
+                .catch(error => console.error('Error cargando productos:', error));
+        }
+
+        // Cargar productos al inicio
+        loadProducts();
+
+        // Manejar el clic en "Cargar más"
+        document.getElementById('load-more').addEventListener('click', loadProducts);
+
+        // Mover a la parte superior de la página al hacer clic en el logo
+        document.getElementById('logo').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Mover a la sección de contacto al hacer clic
+        document.getElementById('contact-link').addEventListener('click', (event) => {
+            event.preventDefault();
+            const contactoSection = document.getElementById('contacto');
+            contactoSection.scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Carrusel de banners
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.style.transform = `translateX(${(i - index) * 100}%)`;
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length; // Ciclo a través de las slides
+            showSlide(currentSlide);
+        }
+
+        setInterval(nextSlide, 5000); // Cambia de imagen cada 5 segundos
+        showSlide(currentSlide);
     </script>
-    
 </body>
+
 </html>
