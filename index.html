@@ -148,7 +148,7 @@
 
     <!-- Botón flotante de WhatsApp -->
     <a href="https://wa.me/5523277869" target="_blank" class="whatsapp-float">
-    <img src="./assets/whatsapp-icon.png" alt="WhatsApp">
+        <img src="./assets/whatsapp-icon.png" alt="WhatsApp">
     </a>
 
     <!-- Coloca los scripts aquí, justo antes de cerrar la etiqueta body -->
@@ -204,15 +204,24 @@
             });
         }
 
-        function prevSlide() {
-            slideIndex = (slideIndex > 0) ? slideIndex - 1 : slides.length - 1;
+        function nextSlide() {
+            slideIndex = (slideIndex + 1) % slides.length; // Usar slideIndex
             showSlide(slideIndex);
         }
 
-        function nextSlide() {
-            slideIndex = (slideIndex < slides.length - 1) ? slideIndex + 1 : 0;
+        function prevSlide() {
+            slideIndex = (slideIndex - 1 + slides.length) % slides.length; // Usar slideIndex
             showSlide(slideIndex);
         }
+
+        // Cambia de imagen cada 5 segundos
+        setInterval(nextSlide, 5000);
+        showSlide(currentSlide);
+
+        // Añadir event listener para hacer scroll al inicio al hacer clic en el logo
+        document.querySelector('.logo img').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
         window.addEventListener('DOMContentLoaded', () => {
             showSlide(slideIndex); // Mostrar el primer slide al cargar la página

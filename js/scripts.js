@@ -2,13 +2,13 @@ let currentSlide = 0;
 const slides = document.querySelectorAll('.slide');
 
 function showSlide(index) {
-    // Cada imagen ocupa el 50%, así que multiplicamos por 50 en lugar de 100
-    document.querySelector('.slides').style.transform = `translateX(${index * -50}%)`;
+    // Cada imagen ocupa el 100%, así que multiplicamos por 100 en lugar de 50
+    document.querySelector('.slides').style.transform = `translateX(${index * -100}%)`;
 }
 
 function nextSlide() {
-    // Asegúrate de que solo haya dos slides para un ciclo continuo
-    currentSlide = (currentSlide + 1) % (slides.length - 1); // Ajusta el ciclo
+    // Cambia de slide, ciclando entre todos
+    currentSlide = (currentSlide + 1) % slides.length; // Cambiado a slides.length
     showSlide(currentSlide);
 }
 
@@ -17,11 +17,11 @@ function prevSlide() {
     showSlide(currentSlide);
 }
 
-setInterval(nextSlide, 5000); // Cambia de imagen cada 5 segundos
+// Cambia de imagen cada 5 segundos
+setInterval(nextSlide, 5000);
 showSlide(currentSlide);
 
-
-
+// Añadir event listener para hacer scroll al inicio al hacer clic en el logo
 document.querySelector('.logo img').addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });

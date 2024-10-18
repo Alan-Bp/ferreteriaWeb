@@ -17,12 +17,12 @@ nav {
     flex-direction: column;
     align-items: center;
     background: rgba(253, 253, 253, 0.71);
-    -webkit-backdrop-filter: blur(3px); /* Soporte para Safari 9+ */
-    backdrop-filter: blur(3px); /* Para navegadores modernos */
-    position: fixed; /* Fijo para que se mantenga al hacer scroll */
+    -webkit-backdrop-filter: blur(3px); /* Agregado para soporte en Safari */
+    backdrop-filter: blur(3px);
+    position: fixed;
     width: 100%;
     top: 0;
-    z-index: 10; /* Asegúrate de que el navbar esté por encima del carrusel */
+    z-index: 10;
 }
 
 nav .top-row {
@@ -41,7 +41,6 @@ nav .logo img {
 
 nav .logo img:hover {
     transform: scale(1.2);
-    cursor: pointer;
 }
 
 nav .nav-links {
@@ -59,30 +58,20 @@ nav .nav-links li a:hover {
     border-bottom: 2px solid #000;
 }
 
-nav .nav-links li a:hover::after {
-    width: 100%;
-}
-
 /* Barra de búsqueda centrada */
 nav .search-bar {
     display: flex;
-    align-items: center;
-    /* Cambia 'right' a 'center' */
     justify-content: center;
-    /* Asegúrate de centrar los elementos */
     width: 100%;
-    /* Ocupa todo el ancho disponible */
 }
 
 .search-bar input {
     flex-grow: 1;
-    /* Permite que el input crezca y ocupe espacio disponible */
     font-size: 16px;
     border: 1px solid #dddddd00;
     border-radius: 0;
     height: 30px;
     margin-right: 5px;
-    /* Añade un margen a la derecha para separar el botón */
 }
 
 .search-bar .search-btn {
@@ -115,60 +104,45 @@ nav .search-bar {
 /* Hero Section */
 .hero-section {
     margin-top: 180px;
-    padding-top: 30px;
     text-align: center;
-    background-color: #ffffff00;
-    color: #ffffff00;
+}
+
+.hero-content h1,
+.hero-content p {
+    color: #000; /* Aplicar color negro a ambos elementos */
 }
 
 .hero-content h1 {
     font-size: 32px;
-    color: #000000;
 }
 
 .hero-content p {
     font-size: 18px;
-    color: #000000;
 }
 
 /* Carrusel */
 .carousel {
     max-width: 100%;
-    height: 350px;
+    height: 400px;
     overflow: hidden;
-    /* Asegura que el contenido no se desborde */
     position: relative;
-    /* Mantiene el flujo del documento */
     margin-top: 20px;
     z-index: 1;
-    /* Coloca el carrusel detrás del navbar */
 }
 
 .slides {
     display: flex;
     transition: transform 0.5s ease-in-out;
-    /* Transición suave al deslizar */
-    /* Agregar un ajuste de alto fijo para asegurarte que no se desplace */
     height: 100%;
-    /* Asegúrate de que las slides ocupen todo el alto del contenedor */
-    width: 200%;
-    margin: 0;
-    /* Eliminar márgenes en el contenedor de las slides */
-    padding: 0;
 }
 
 .slide {
     min-width: 100%;
-    height: auto;
-    /* Asegura que las imágenes ocupen el alto completo */
-
 }
 
 .carousel img {
     width: 100%;
     height: 100%;
-    object-fit: conver;
-    /* Asegúrate de que la imagen ocupe todo el contenedor */
 }
 
 /* Flechas de navegación del carrusel */
@@ -176,15 +150,12 @@ nav .search-bar {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: #f5eb2e90;
+    background-color: rgba(245, 235, 46, 0.9);
     border: none;
     padding: 20px;
-    /* Aumentar la altura */
     cursor: pointer;
     z-index: 1;
-    /* Asegúrate de que las flechas estén por encima de las imágenes */
-    border-radius: 40%;
-    /* Esquinas redondeadas para las flechas */
+    border-radius: 50%; /* Cambiado a 50% para hacer un botón circular */
 }
 
 .carousel-button.left {
@@ -206,7 +177,6 @@ nav .search-bar {
     text-align: center;
     font-size: 28px;
     margin-bottom: 30px;
-    color: #000000;
 }
 
 .productos-grid {
@@ -220,7 +190,6 @@ nav .search-bar {
     background-color: rgba(253, 253, 253, 0.71);
     padding: 20px;
     border: 3px solid #67747d;
-    text-align: center;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     width: 190px;
@@ -233,7 +202,7 @@ nav .search-bar {
 .product-img {
     width: 100%;
     height: 150px;
-    object-fit: cover;
+    object-fit: cover; /* Mantener proporción y ajuste */
     border-radius: 8px;
 }
 
@@ -262,85 +231,65 @@ nav .search-bar {
 /* Estilos para el botón "Cargar más productos" */
 .load-more-button {
     background-color: #546e7a;
-    /* Color de fondo */
     color: white;
-    /* Color del texto */
     border: none;
-    /* Sin borde */
     padding: 10px 20px;
-    /* Espaciado interno */
     font-size: 16px;
-    /* Tamaño de fuente */
     text-transform: uppercase;
-    /* Texto en mayúsculas */
     cursor: pointer;
-    /* Cambiar cursor al pasar */
     display: block;
-    /* Asegurar que el botón esté en bloque */
     margin: 20px auto;
-    /* Centramos el botón */
     border-radius: 5px;
-    /* Esquinas redondeadas */
     transition: background-color 0.3s;
-    /* Transición suave para el color */
 }
 
 .load-more-button:hover {
     background-color: #a5a8bb;
-    /* Color al pasar el mouse */
 }
 
+/* Loader */
 .loading {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100px;
-    /* Ajusta la altura según tus necesidades */
 }
 
 .loader {
     border: 8px solid #f3f3f3;
-    /* Color del borde */
     border-top: 8px solid #67747d;
-    /* Color de la parte superior */
     border-radius: 50%;
     width: 50px;
-    /* Ancho del círculo */
     height: 50px;
-    /* Alto del círculo */
     animation: spin 1s linear infinite;
-    /* Animación de rotación */
 }
 
 /* Animación de rotación */
 @keyframes spin {
-    0% {
+    from {
         transform: rotate(0deg);
     }
-
-    100% {
+    to {
         transform: rotate(360deg);
     }
 }
 
+/* Dropdown */
 .dropdown-content img.dropdown-img {
     width: 20px;
-    /* Ajusta el tamaño de la imagen según sea necesario */
     height: auto;
-    /* Mantiene la proporción */
     margin-right: 8px;
-    /* Espacio entre la imagen y el texto */
     vertical-align: middle;
-    /* Alinea la imagen verticalmente con el texto */
 }
-.centered-div {
+
+/* Secciones centradas */
+.centered-div,
+.centered-section {
     text-align: center;
     margin: 20px 0;
 }
-.centered-section {
-    text-align: center;
-}
 
+/* WhatsApp float button */
 .whatsapp-float {
     position: fixed;
     bottom: 20px;
