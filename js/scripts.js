@@ -3,7 +3,7 @@ const loadCount = 20; // Número de productos a cargar por vez
 
 // Función para cargar productos
 function loadProducts() {
-    fetch('http://localhost:3000/api/products')
+    fetch('http://localhost:3000/api/products') // Cambia esta URL por la de tu API
         .then(response => response.json())
         .then(data => {
             const productosContainer = document.getElementById('productos');
@@ -18,7 +18,11 @@ function loadProducts() {
                     // Crear el elemento de imagen con verificación
                     const img = document.createElement('img');
                     img.className = 'product-img';
-                    img.src = `./imagenes/${product.nombre.toLowerCase().replace(/\s+/g, '_')}.png`;
+
+                    // Obtener la URL de la imagen desde Firebase Storage
+                    const imgRef = `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/imagenes%2F${product.nombre.toLowerCase().replace(/\s+/g, '_')}.png?alt=media`;
+
+                    img.src = imgRef; // Asignar la URL de Firebase
 
                     // Si la imagen no se carga, usa la predeterminada (logo de Ferrem)
                     img.onerror = () => {
@@ -94,3 +98,21 @@ showSlide(slideIndex);
 document.querySelector('.logo img').addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+// Inicializar Firebase
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCe9ZTmURGvpXTSiojgFPW5fXm2UcAocRs",
+  authDomain: "ferrem-web.firebaseapp.com",
+  projectId: "ferrem-web",
+  storageBucket: "ferrem-web.appspot.com",
+  messagingSenderId: "404367969906",
+  appId: "1:404367969906:web:86eb3e2fb6ebd4da2dbceb",
+  measurementId: "G-2T48Z2VLZC"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
