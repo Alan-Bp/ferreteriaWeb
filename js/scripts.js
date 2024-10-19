@@ -1,43 +1,3 @@
-// Variables para el carrusel
-let currentSlide = 0;
-const slides = document.querySelectorAll('.slide');
-
-// Función para mostrar un slide específico
-function showSlide(index) {
-    document.querySelector('.slides').style.transform = `translateX(${index * -100}%)`;
-}
-
-// Función para cambiar al siguiente slide
-function nextSlide() {
-    currentSlide = (currentSlide + 1) % slides.length;
-    showSlide(currentSlide);
-}
-
-// Función para cambiar al slide anterior
-function prevSlide() {
-    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-    showSlide(currentSlide);
-}
-
-// Cambia de imagen cada 5 segundos
-setInterval(nextSlide, 5000);
-showSlide(currentSlide);
-
-// Event listener para hacer scroll al inicio al hacer clic en el logo
-document.querySelector('.logo img').addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-
-// Detecta el scroll para ajustar el padding dinámicamente
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 0) {
-        document.body.classList.add('scroll-down');
-    } else {
-        document.body.classList.remove('scroll-down');
-    }
-});
-
-// Variables para cargar productos
 let currentCount = 0; // Contador de productos cargados
 const loadCount = 20; // Número de productos a cargar por vez
 
@@ -49,15 +9,36 @@ function loadProducts() {
             const productosContainer = document.getElementById('productos');
             if (data && data.data && Array.isArray(data.data)) {
                 const productsToLoad = data.data.slice(currentCount, currentCount + loadCount);
+                const fragment = document.createDocumentFragment();
+
                 productsToLoad.forEach(product => {
-                    productosContainer.innerHTML += `
-                        <div class="product-card">
-                            <img src="./assets/${product.ItemCode}.png" alt="${product.ItemName}" class="product-img">
-                            <h3>${product.ItemName}</h3>
-                            <p>${product.Description || 'Descripción no disponible.'}</p>
-                            <span>Precio: $${product.Price.toFixed(2)}</span>
-                        </div>`;
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+
+                    // Crear el elemento de imagen con verificación
+                    const img = document.createElement('img');
+                    img.className = 'product-img';
+                    img.src = `./imagenes/${product.nombre.toLowerCase().replace(/\s+/g, '_')}.png`;
+
+                    // Si la imagen no se carga, usa la predeterminada (logo de Ferrem)
+                    img.onerror = () => {
+                        img.src = './assets/logo.png'; // Imagen predeterminada
+                    };
+
+                    // Agregar el resto del contenido del producto
+                    productCard.innerHTML += `
+                        <h3>${product.nombre}</h3>
+                        <p>${product.descripcion || 'Descripción no disponible.'}</p>
+                        <span>Precio: $${product.precio.toFixed(2)}</span>
+                    `;
+
+                    // Insertar la imagen antes del texto en la tarjeta
+                    productCard.insertBefore(img, productCard.firstChild);
+
+                    fragment.appendChild(productCard);
                 });
+
+                productosContainer.appendChild(fragment);
                 currentCount += loadCount;
 
                 // Ocultar el botón "Cargar más" si no hay más productos
@@ -73,8 +54,43 @@ function loadProducts() {
         });
 }
 
-// Event listener para el botón "Mostrar más productos"
-document.getElementById('load-more').addEventListener('click', loadProducts);
+// Configuración del evento al cargar la página
+window.addEventListener('DOMContentLoaded', () => {
+    loadProducts(); // Cargar productos al inicio
+    showSlide(slideIndex); // Mostrar el primer slide al cargar la página
+});
 
-// Cargar productos al inicio
-window.addEventListener('DOMContentLoaded', loadProducts);
+// Event listener para el botón "Mostrar más productos"
+const loadMoreButton = document.getElementById('load-more');
+if (loadMoreButton) {
+    loadMoreButton.addEventListener('click', loadProducts);
+}
+
+// Funciones para el carrusel
+let slideIndex = 0;
+const slides = document.querySelectorAll('.slide');
+
+function showSlide(index) {
+    slides.forEach((slide, i) => {
+        slide.style.display = i === index ? 'block' : 'none';
+    });
+}
+
+function nextSlide() {
+    slideIndex = (slideIndex + 1) % slides.length; // Usar slideIndex
+    showSlide(slideIndex);
+}
+
+function prevSlide() {
+    slideIndex = (slideIndex - 1 + slides.length) % slides.length; // Usar slideIndex
+    showSlide(slideIndex);
+}
+
+// Cambia de imagen cada 5 segundos
+setInterval(nextSlide, 5000);
+showSlide(slideIndex);
+
+// Añadir event listener para hacer scroll al inicio al hacer clic en el logo
+document.querySelector('.logo img').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});

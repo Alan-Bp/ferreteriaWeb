@@ -13,75 +13,70 @@ fs.readFile('./preciosferrem.txt', 'utf8', (err, data) => {
 
     const productos = data.split('\n'); // Divide el archivo por líneas
 
-    const insertQuery = `INSERT INTO productos (ItemCode, ItemName, Description, Price) VALUES (?, ?, ?, ?)`;
-    const selectQuery = `SELECT ItemCode FROM productos WHERE ItemCode = ?`;
+    const insertQuery = `INSERT INTO productos (id, nombre, descripcion, departamento, precio, imagen) VALUES (?, ?, ?, ?, ?, ?)`;
+    const selectQuery = `SELECT id FROM productos WHERE id = ?`;
 
     db.serialize(() => {
         db.run("BEGIN TRANSACTION");
 
-        let insercionesPendientes = productos.length;  // Para saber cuántas inserciones faltan
+        let insercionesPendientes = productos.length;
 
         productos.forEach((line, index) => {
-            // Limpiamos espacios adicionales y luego dividimos
-            const cleanedLine = line.trim().replace(/\s+/g, ' '); // Eliminar espacios extra
-            const parts = cleanedLine.split('|'); // Ajustar el separador con \\
+            const parts = line.split('|');
 
-            if (parts.length !== 3) {
+            if (parts.length !== 6) { // Comprobar que todos los campos existan
                 console.log(`Línea inválida en la línea ${index + 1}: ${line}`);
-                insercionesPendientes--; // Reducimos cuando encontramos una línea inválida
-                return; // Saltar las líneas inválidas
+                procesarTransaccion();
+                return;
             }
 
-            const [ItemCode, ItemName, Price] = parts;
+            const [id, nombre, descripcion, departamento, precio] = parts;
+            const imagenNombre = nombre.trim().toLowerCase().replace(/\s+/g, '_'); // Convierte el nombre a minúsculas y reemplaza espacios por guiones bajos
+            const rutaImagen = `./imagenes/${imagenNombre}.png`; // Cambié aquí para usar el nombre en vez del ID
 
-            // Verificar si el ItemCode ya existe
-            db.get(selectQuery, [ItemCode.trim()], (err, row) => {
+            // Verificar si el producto ya existe
+            db.get(selectQuery, [id.trim()], (err, row) => {
                 if (err) {
                     console.error("Error verificando el producto:", err.message);
-                    insercionesPendientes--;
+                    procesarTransaccion();
                     return;
                 }
 
                 if (!row) { // Si el producto no existe, lo insertamos
-                    db.run(insertQuery, [ItemCode.trim(), ItemName.trim(), "Descripción no disponible", parseFloat(Price)], (err) => {
+                    db.run(insertQuery, [id.trim(), nombre.trim(), descripcion.trim() || "Descripción no disponible", departamento.trim(), parseFloat(precio), rutaImagen], (err) => {
                         if (err) {
-                            console.error("Error insertando producto:", err.message);
+                            console.error(`Error insertando producto ${nombre}:`, err.message);
                         } else {
-                            console.log(`Producto ${ItemName} insertado.`);
+                            console.log(`Producto ${nombre} insertado.`);
                         }
-
-                        insercionesPendientes--;
-                        if (insercionesPendientes === 0) {
-                            // Si todas las inserciones han terminado, cerramos la transacción y la base de datos
-                            db.run("COMMIT", (err) => {
-                                if (err) {
-                                    console.error("Error finalizando la transacción:", err.message);
-                                } else {
-                                    console.log("Transacción completada.");
-                                }
-                                db.close((err) => {
-                                    if (err) {
-                                        console.error('Error al cerrar la base de datos:', err.message);
-                                    } else {
-                                        console.log('Conexión a la base de datos cerrada.');
-                                    }
-                                });
-                            });
-                        }
+                        procesarTransaccion();
                     });
                 } else {
-                    console.log(`Producto con ItemCode ${ItemCode} ya existe, no se inserta.`);
-                    insercionesPendientes--;
-                    if (insercionesPendientes === 0) {
-                        db.run("COMMIT", (err) => {
-                            if (err) {
-                                console.error("Error finalizando la transacción:", err.message);
-                            }
-                            db.close();
-                        });
-                    }
+                    console.log(`Producto con id ${id} ya existe, no se inserta.`);
+                    procesarTransaccion();
                 }
             });
         });
+
+        // Función para procesar la transacción y cerrar la base de datos cuando termine
+        function procesarTransaccion() {
+            insercionesPendientes--;
+            if (insercionesPendientes === 0) {
+                db.run("COMMIT", (err) => {
+                    if (err) {
+                        console.error("Error finalizando la transacción:", err.message);
+                    } else {
+                        console.log("Transacción completada.");
+                    }
+                    db.close((err) => {
+                        if (err) {
+                            console.error('Error al cerrar la base de datos:', err.message);
+                        } else {
+                            console.log('Conexión a la base de datos cerrada.');
+                        }
+                    });
+                });
+            }
+        }
     });
 });

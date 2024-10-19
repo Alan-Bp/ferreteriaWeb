@@ -13,10 +13,12 @@ const db = new sqlite3.Database('./database/db.sqlite', (err) => {
 // Crear la tabla productos
 db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS productos (
- ItemCode TEXT PRIMARY KEY,
-  ItemName TEXT,
-  Description TEXT,
-  Price REAL
+    id TEXT PRIMARY KEY,
+    nombre TEXT,
+    descripcion TEXT,
+    departamento TEXT,
+    precio REAL,
+    imagen TEXT  -- Aquí almacenaremos la ruta o nombre de archivo de la imagen
   )`, (err) => {
     if (err) {
       console.error("Error creando la tabla productos:", err.message);

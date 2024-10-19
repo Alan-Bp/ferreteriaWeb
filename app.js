@@ -23,6 +23,10 @@ app.use(express.static('public'));
 const productRoutes = require('./routes/products');
 app.use('/api/products', productRoutes);
 
+// Servir imágenes de la carpeta 'imagenes'
+app.use('/imagenes', express.static('imagenes'));
+
+
 // Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
