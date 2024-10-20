@@ -29,7 +29,9 @@ const productosRef = ref(database, '/');
 get(productosRef).then((snapshot) => {
     if (snapshot.exists()) {
         const productos = snapshot.val();
+        allProducts = Object.values(productos); // Almacenar todos los productos
         console.log(productos); // Aquí puedes procesar los datos de los productos
+        loadProducts(); // Cargar productos al inicio
     } else {
         console.log("No hay datos disponibles");
     }
@@ -52,7 +54,7 @@ function createProductCard(product) {
     // Crear el elemento de imagen
     const img = document.createElement('img');
     img.className = 'product-img';
-    
+
     img.src = getImageUrl(product); // Asignar la URL de Firebase
     // Manejar errores de carga de imagen
     img.onerror = () => {
@@ -74,6 +76,55 @@ function createProductCard(product) {
     productCard.insertBefore(img, productCard.firstChild);
     return productCard;
 }
+
+// Función para mostrar productos en la interfaz
+function displayProducts(products) {
+    const productosContainer = document.getElementById('productos');
+    productosContainer.innerHTML = ''; // Limpiar contenido anterior
+    const fragment = document.createDocumentFragment();
+
+    products.forEach(product => {
+        fragment.appendChild(createProductCard(product));
+    });
+
+    productosContainer.appendChild(fragment);
+}
+
+// Nueva función para filtrar productos
+function filterProducts(query) {
+    return allProducts.filter(product => {
+        return product.nombre.toLowerCase().includes(query.toLowerCase()) ||
+            product.descripcion.toLowerCase().includes(query.toLowerCase());
+    });
+}
+
+// Función para mostrar sugerencias
+function showSuggestions(query) {
+    const suggestionsContainer = document.getElementById('suggestions');
+    suggestionsContainer.innerHTML = ''; // Limpiar sugerencias anteriores
+
+    const filteredProducts = filterProducts(query); // Obtener los productos filtrados
+    filteredProducts.forEach(product => {
+        const suggestionItem = document.createElement('div');
+        suggestionItem.className = 'suggestion-item';
+        suggestionItem.textContent = product.nombre;
+
+        // Manejar clic en la sugerencia
+        suggestionItem.addEventListener('click', () => {
+            displayProducts([product]); // Mostrar el producto seleccionado
+            document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' }); // Hacer scroll a la sección de catálogo
+            suggestionsContainer.innerHTML = ''; // Limpiar sugerencias después de seleccionar
+        });
+
+        suggestionsContainer.appendChild(suggestionItem); // Agregar sugerencia al contenedor
+    });
+}
+
+// Configuración del evento al cargar la página
+window.addEventListener('DOMContentLoaded', () => {
+    loadProducts(); // Cargar productos al inicio
+    showSlide(slideIndex); // Mostrar el primer slide al cargar la página
+});
 
 
 // Función para cargar productos desde Firebase
@@ -109,30 +160,40 @@ function loadProducts() {
         });
 }
 
-// Función para mostrar productos en la interfaz
-function displayProducts(products) {
-    const productosContainer = document.getElementById('productos');
-    productosContainer.innerHTML = ''; // Limpiar contenido anterior
-    const fragment = document.createDocumentFragment();
-
-    products.forEach(product => {
-        fragment.appendChild(createProductCard(product));
+// Event listener para la barra de búsqueda
+const searchInput = document.getElementById('search-input');
+if (searchInput) {
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value; // Obtener el valor del input
+        showSuggestions(query); // Mostrar sugerencias según la búsqueda
     });
-
-    productosContainer.appendChild(fragment);
 }
-
-// Configuración del evento al cargar la página
-window.addEventListener('DOMContentLoaded', () => {
-    loadProducts(); // Cargar productos al inicio
-    showSlide(slideIndex); // Mostrar el primer slide al cargar la página
-});
 
 // Event listener para el botón "Mostrar más productos"
 const loadMoreButton = document.getElementById('load-more');
 if (loadMoreButton) {
     loadMoreButton.addEventListener('click', loadProducts);
 }
+// Event listener para el botón de búsqueda
+const searchButton = document.getElementById('search-button');
+if (searchButton) {
+    searchButton.addEventListener('click', () => {
+        const query = searchInput.value; // Obtener el valor del input
+        const filteredProducts = filterProducts(query); // Filtrar productos según la búsqueda
+        displayProducts(filteredProducts); // Mostrar productos filtrados
+        document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' }); // Hacer scroll a la sección de catálogo
+    });
+}
+
+// Event listener para el teclado (presionar Enter)
+searchInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+        const query = searchInput.value; // Obtener el valor del input
+        const filteredProducts = filterProducts(query); // Filtrar productos según la búsqueda
+        displayProducts(filteredProducts); // Mostrar productos filtrados
+        document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' }); // Hacer scroll a la sección de catálogo
+    }
+});
 
 // Funciones para el carrusel
 let slideIndex = 0;

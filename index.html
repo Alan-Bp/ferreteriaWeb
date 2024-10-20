@@ -48,7 +48,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js";
         import { getDatabase } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"; // Importa el módulo de la base de datos
-    
+
         const firebaseConfig = {
             apiKey: "AIzaSyBmTijJCeuv1tKKJcrwWGoC6VR3vMXIRKY",
             authDomain: "cloud-ferremweb.firebaseapp.com",
@@ -58,95 +58,101 @@
             appId: "1:198765237780:web:5a3db5b9417165726cf901",
             measurementId: "G-3DEL1LR592"
         };
-    
+
         // Inicializa Firebase
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const db = getDatabase(app); // Inicializar la base de datos
-    
+
         // Exporta la instancia de la app y la base de datos
         export { app, db };
-    </script>   
-
+    </script>
 </head>
 
 <body>
-    <!-- Navbar -->
-<!-- Navbar -->
-<nav>
-    <div class="top-row">
-        <div class="logo">
-            <img src="./assets/logo.png" alt="Logo de Ferrem" id="logo">
-        </div>
-        <div class="search-bar">
-            <div class="dropdown">
-                <button class="department-btn">Departamento</button>
-                <div class="dropdown-content">
-                    <a href="javascript:void(0);" data-departamento="Abrasivos y discos">
-                        <img src="./assets/abrasivos.png" alt="Abrasivos" class="dropdown-img"> Abrasivos y discos
-                    </a>
-                    <a href="javascript:void(0);" data-departamento="Accesorios">
-                        <img src="./assets/accesorios.png" alt="Accesorios" class="dropdown-img"> Accesorios para maquinado
-                    </a>
-                    <a href="javascript:void(0);" data-departamento="Automotriz">
-                        <img src="./assets/automotriz.png" alt="Automotriz" class="dropdown-img"> Automotriz
-                    </a>
-                    <a href="javascript:void(0);" data-departamento="Baleros">
-                        <img src="./assets/baleros.png" alt="Baleros" class="dropdown-img"> Baleros
-                    </a>
-                    <a href="javascript:void(0);" data-departamento="Chumaceras, cadenas y transmisión de fuerza">
-                        <img src="./assets/chumaceras.png" alt="Chumaceras" class="dropdown-img"> Chumaceras, cadenas y transmisión de fuerza
-                    </a>
-                    <a href="javascript:void(0);" data-departamento="Construcción">
-                        <img src="./assets/construccion.png" alt="Construcción" class="dropdown-img"> Construcción
-                    </a>
-                    <a href="javascript:void(0);" data-departamento="Ferretería">
-                        <img src="./assets/ferreteria.png" alt="Ferretería" class="dropdown-img"> Ferretería
-                    </a>
-                    <a href="javascript:void(0);" data-departamento="Herramientas de Corte">
-                        <img src="./assets/herramientas_corte.png" alt="Herramientas de Corte" class="dropdown-img"> Herramientas de corte para roscar
-                    </a>
-                    <a href="javascript:void(0);" data-departamento="Herramientas de Medición">
-                        <img src="./assets/herramientas_medicion.png" alt="Herramientas de Medición" class="dropdown-img"> Herramientas de medición y trazado
-                    </a>
-                    <a href="javascript:void(0);" data-departamento="Herramientas Manuales">
-                        <img src="./assets/herramientas_manuales.png" alt="Herramientas Manuales" class="dropdown-img"> Herramientas manuales
-                    </a>
-                    <a href="javascript:void(0);" data-departamento="Lubricación">
-                        <img src="./assets/lubricacion.png" alt="Lubricación" class="dropdown-img"> Lubricación
-                    </a>
-                    <a href="javascript:void(0);" data-departamento="Manejo de Materiales">
-                        <img src="./assets/manejo_materiales.png" alt="Manejo de Materiales" class="dropdown-img"> Manejo de materiales
-                    </a>
-                    <a href="javascript:void(0);" data-departamento="Maquinaria">
-                        <img src="./assets/maquinaria.png" alt="Maquinaria" class="dropdown-img"> Maquinaria
-                    </a>
-                    <a href="javascript:void(0);" data-departamento="Perforación">
-                        <img src="./assets/perforacion.png" alt="Perforación" class="dropdown-img"> Perforación
-                    </a>
-                    <a href="javascript:void(0);" data-departamento="Pintura">
-                        <img src="./assets/pintura.png" alt="Pintura" class="dropdown-img"> Pintura
-                    </a>
-                    <a href="javascript:void(0);" data-departamento="Seguridad">
-                        <img src="./assets/seguridad.png" alt="Seguridad" class="dropdown-img"> Seguridad
-                    </a>
-                    <a href="javascript:void(0);" data-departamento="Soldadura">
-                        <img src="./assets/soldadura.png" alt="Soldadura" class="dropdown-img"> Soldadura
-                    </a>
-                    <a href="javascript:void(0);" data-departamento="Tornillos">
-                        <img src="./assets/tornillos.png" alt="Tornillos" class="dropdown-img"> Tornillos y sujetadores
-                    </a>
-                </div>
+    <nav>
+        <div class="top-row">
+            <div class="logo">
+                <img src="./assets/logo.png" alt="Logo de Ferrem" id="logo">
             </div>
-            <input type="text" id="search-input" name="search" placeholder="Buscar productos...">
-            <button class="search-btn" type="button"><img src="./assets/search.png" alt="Buscar"></button>
+            <div class="search-bar">
+                <div class="dropdown">
+                    <button class="department-btn">Departamento</button>
+                    <div class="dropdown-content">
+                        <a href="javascript:void(0);" data-departamento="Abrasivos y discos">
+                            <img src="./assets/abrasivos.png" alt="Abrasivos" class="dropdown-img"> Abrasivos y discos
+                        </a>
+                        <a href="javascript:void(0);" data-departamento="Accesorios">
+                            <img src="./assets/accesorios.png" alt="Accesorios" class="dropdown-img"> Accesorios para
+                            maquinado
+                        </a>
+                        <a href="javascript:void(0);" data-departamento="Automotriz">
+                            <img src="./assets/automotriz.png" alt="Automotriz" class="dropdown-img"> Automotriz
+                        </a>
+                        <a href="javascript:void(0);" data-departamento="Baleros">
+                            <img src="./assets/baleros.png" alt="Baleros" class="dropdown-img"> Baleros
+                        </a>
+                        <a href="javascript:void(0);" data-departamento="Chumaceras, cadenas y transmisión de fuerza">
+                            <img src="./assets/chumaceras.png" alt="Chumaceras" class="dropdown-img"> Chumaceras,
+                            cadenas y transmisión de fuerza
+                        </a>
+                        <a href="javascript:void(0);" data-departamento="Construcción">
+                            <img src="./assets/construccion.png" alt="Construcción" class="dropdown-img"> Construcción
+                        </a>
+                        <a href="javascript:void(0);" data-departamento="Ferretería">
+                            <img src="./assets/ferreteria.png" alt="Ferretería" class="dropdown-img"> Ferretería
+                        </a>
+                        <a href="javascript:void(0);" data-departamento="Herramientas de Corte">
+                            <img src="./assets/herramientas_corte.png" alt="Herramientas de Corte" class="dropdown-img">
+                            Herramientas de corte para roscar
+                        </a>
+                        <a href="javascript:void(0);" data-departamento="Herramientas de Medición">
+                            <img src="./assets/herramientas_medicion.png" alt="Herramientas de Medición"
+                                class="dropdown-img"> Herramientas de medición y trazado
+                        </a>
+                        <a href="javascript:void(0);" data-departamento="Herramientas Manuales">
+                            <img src="./assets/herramientas_manuales.png" alt="Herramientas Manuales"
+                                class="dropdown-img"> Herramientas manuales
+                        </a>
+                        <a href="javascript:void(0);" data-departamento="Lubricación">
+                            <img src="./assets/lubricacion.png" alt="Lubricación" class="dropdown-img"> Lubricación
+                        </a>
+                        <a href="javascript:void(0);" data-departamento="Manejo de Materiales">
+                            <img src="./assets/manejo_materiales.png" alt="Manejo de Materiales" class="dropdown-img">
+                            Manejo de materiales
+                        </a>
+                        <a href="javascript:void(0);" data-departamento="Maquinaria">
+                            <img src="./assets/maquinaria.png" alt="Maquinaria" class="dropdown-img"> Maquinaria
+                        </a>
+                        <a href="javascript:void(0);" data-departamento="Perforación">
+                            <img src="./assets/perforacion.png" alt="Perforación" class="dropdown-img"> Perforación
+                        </a>
+                        <a href="javascript:void(0);" data-departamento="Pintura">
+                            <img src="./assets/pintura.png" alt="Pintura" class="dropdown-img"> Pintura
+                        </a>
+                        <a href="javascript:void(0);" data-departamento="Seguridad">
+                            <img src="./assets/seguridad.png" alt="Seguridad" class="dropdown-img"> Seguridad
+                        </a>
+                        <a href="javascript:void(0);" data-departamento="Soldadura">
+                            <img src="./assets/soldadura.png" alt="Soldadura" class="dropdown-img"> Soldadura
+                        </a>
+                        <a href="javascript:void(0);" data-departamento="Tornillos">
+                            <img src="./assets/tornillos.png" alt="Tornillos" class="dropdown-img"> Tornillos y
+                            sujetadores
+                        </a>
+                    </div>
+                </div>
+                <input type="text" id="search-input" name="search" placeholder="Buscar productos...">
+                <button class="search-btn" type="button"><img src="./assets/search.png" alt="Buscar"></button>
+                <div id="suggestions" class="dropdown-content"></div> <!-- Contenedor para sugerencias -->
+
+            </div>
+            <ul class="nav-links">
+                <li><a href="#catalogo">Catálogo</a></li>
+                <li><a href="#contacto" id="contact-link">Contacto</a></li>
+            </ul>
         </div>
-        <ul class="nav-links">
-            <li><a href="#catalogo">Catálogo</a></li>
-            <li><a href="#contacto" id="contact-link">Contacto</a></li>
-        </ul>
-    </div>
-</nav>
+    </nav>
 
 
     <!-- Hero Section (Bienvenido a Ferrem) -->
