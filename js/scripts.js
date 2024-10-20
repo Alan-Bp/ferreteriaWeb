@@ -5,6 +5,8 @@ let currentCount = 0; // Contador de productos cargados
 const loadCount = 20; // Número de productos a cargar por vez
 let allProducts = []; // Para almacenar todos los productos cargados
 let filteredProducts = []; // Para almacenar los productos filtrados
+const departmentLinks = document.querySelectorAll('.dropdown-content a');
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyBmTijJCeuv1tKKJcrwWGoC6VR3vMXIRKY",
@@ -159,4 +161,62 @@ showSlide(slideIndex);
 // Añadir event listener para hacer scroll al inicio al hacer clic en el logo
 document.querySelector('.logo img').addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Función para limpiar el nombre del departamento
+function cleanDepartmentName(departamento) {
+    // Si el departamento contiene el símbolo '|', obtenemos solo la última palabra
+    if (departamento.includes('|')) {
+        const parts = departamento.split('|');
+        return parts[parts.length - 1].trim(); // Retorna la última parte y la limpia de espacios
+    }
+    return departamento.trim(); // Si no tiene '|', solo lo limpiamos de espacios
+}
+
+// Función para filtrar productos por departamento
+function filtrarProductosPorDepartamento(departamento) {
+    // Limpiamos el departamento que viene del enlace de la interfaz
+    const departamentoLimpio = cleanDepartmentName(departamento);
+
+    // Consulta a Firebase para obtener productos
+    get(productosRef).then(snapshot => {
+        if (snapshot.exists()) {
+            const allProducts = snapshot.val();
+            const productosArray = Object.values(allProducts);
+
+            // Filtrar productos que coincidan con el departamento seleccionado (insensible a mayúsculas y minúsculas)
+            const productosFiltrados = productosArray.filter(product => {
+                if (product.departamento) {
+                    const deptoProductoLimpio = cleanDepartmentName(product.departamento);
+                    return deptoProductoLimpio.toLowerCase() === departamentoLimpio.toLowerCase();
+                }
+                return false;
+            });
+
+            if (productosFiltrados.length > 0) {
+                // Mostrar los productos filtrados
+                displayProducts(productosFiltrados);
+            } else {
+                // Si no hay productos coincidentes, limpiar la pantalla o mostrar mensaje
+                const productosContainer = document.getElementById('productos');
+                productosContainer.innerHTML = `<p>No se encontraron productos para el departamento ${departamentoLimpio}.</p>`;
+            }
+
+            // Hacer scroll a la sección de catálogo
+            document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' });
+        } else {
+            console.log("No hay productos disponibles.");
+        }
+    }).catch(error => {
+        console.error('Error al filtrar productos por departamento:', error);
+    });
+}
+
+// Modificar los event listeners para que usen el nombre limpio
+departmentLinks.forEach(link => {
+    link.addEventListener('click', (event) => {
+        event.preventDefault(); // Evitar que se recargue la página
+        const departamento = link.getAttribute('data-departamento').trim(); // Obtener el nombre del departamento
+        filtrarProductosPorDepartamento(departamento); // Llamar a la función para filtrar productos
+    });
 });
