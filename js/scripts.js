@@ -1,61 +1,123 @@
+// Configuración de Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"; // Importar la app
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"; // Importar la base de datos
 let currentCount = 0; // Contador de productos cargados
 const loadCount = 20; // Número de productos a cargar por vez
+let allProducts = []; // Para almacenar todos los productos cargados
+let filteredProducts = []; // Para almacenar los productos filtrados
 
-// Función para cargar productos
+const firebaseConfig = {
+    apiKey: "AIzaSyBmTijJCeuv1tKKJcrwWGoC6VR3vMXIRKY",
+    authDomain: "cloud-ferremweb.firebaseapp.com",
+    projectId: "cloud-ferremweb",
+    storageBucket: "cloud-ferremweb.appspot.com",
+    messagingSenderId: "198765237780",
+    appId: "1:198765237780:web:5a3db5b9417165726cf901",
+    measurementId: "G-3DEL1LR592"
+};
+
+// Inicializa Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app); // Inicializar la base de datos
+
+// Puedes usar 'ref' para obtener la referencia a una ruta en tu base de datos
+const productosRef = ref(database, '/');
+
+// Obtener datos de la base de datos
+get(productosRef).then((snapshot) => {
+    if (snapshot.exists()) {
+        const productos = snapshot.val();
+        console.log(productos); // Aquí puedes procesar los datos de los productos
+    } else {
+        console.log("No hay datos disponibles");
+    }
+}).catch((error) => {
+    console.error("Error al obtener los datos: ", error);
+});
+
+// Función para obtener la URL de la imagen
+function getImageUrl(product) {
+    // Obtener el nombre del archivo sin la parte inicial
+    const imageName = product.imagen.replace('/imagenes/', '') + '.png'; // Añadir la extensión .png
+    return `./imagenes/${imageName}`; // Retornar la ruta completa
+}
+
+// Función para crear una tarjeta de producto
+function createProductCard(product) {
+    const productCard = document.createElement('div');
+    productCard.className = 'product-card';
+
+    // Crear el elemento de imagen
+    const img = document.createElement('img');
+    img.className = 'product-img';
+    
+    img.src = getImageUrl(product); // Asignar la URL de Firebase
+    // Manejar errores de carga de imagen
+    img.onerror = () => {
+        img.src = './assets/logo.png'; // Imagen predeterminada
+    };
+
+    // Convertir precio a número y manejar errores
+    const precio = parseFloat(product.precio);
+    const precioFormateado = isNaN(precio) ? 'N/A' : `$${precio.toFixed(2)}`;
+
+    // Agregar el resto del contenido del producto
+    productCard.innerHTML += `
+        <h3>${product.nombre}</h3>
+        <p>${product.descripcion || 'Descripción no disponible.'}</p>
+        <span>Precio: ${precioFormateado}</span>
+    `;
+
+    // Insertar la imagen antes del texto en la tarjeta
+    productCard.insertBefore(img, productCard.firstChild);
+    return productCard;
+}
+
+
+// Función para cargar productos desde Firebase
 function loadProducts() {
-    fetch('http://localhost:3000/api/products') // Cambia esta URL por la de tu API
-        .then(response => response.json())
-        .then(data => {
-            const productosContainer = document.getElementById('productos');
-            if (data && data.data && Array.isArray(data.data)) {
-                const productsToLoad = data.data.slice(currentCount, currentCount + loadCount);
+    // Cambié 'dbRef.once' a 'get(dbRef)' para utilizar la nueva API
+    get(productosRef) // Cambié dbRef a productosRef
+        .then(snapshot => {
+            if (snapshot.exists()) {
+                allProducts = snapshot.val();
+                const productosArray = Object.values(allProducts); // Convertir objeto en array
+
+                const productosContainer = document.getElementById('productos');
+                const productsToLoad = productosArray.slice(currentCount, currentCount + loadCount);
                 const fragment = document.createDocumentFragment();
 
                 productsToLoad.forEach(product => {
-                    const productCard = document.createElement('div');
-                    productCard.className = 'product-card';
-
-                    // Crear el elemento de imagen con verificación
-                    const img = document.createElement('img');
-                    img.className = 'product-img';
-
-                    // Obtener la URL de la imagen desde Firebase Storage
-                    const imgRef = `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/imagenes%2F${product.nombre.toLowerCase().replace(/\s+/g, '_')}.png?alt=media`;
-
-                    img.src = imgRef; // Asignar la URL de Firebase
-
-                    // Si la imagen no se carga, usa la predeterminada (logo de Ferrem)
-                    img.onerror = () => {
-                        img.src = './assets/logo.png'; // Imagen predeterminada
-                    };
-
-                    // Agregar el resto del contenido del producto
-                    productCard.innerHTML += `
-                        <h3>${product.nombre}</h3>
-                        <p>${product.descripcion || 'Descripción no disponible.'}</p>
-                        <span>Precio: $${product.precio.toFixed(2)}</span>
-                    `;
-
-                    // Insertar la imagen antes del texto en la tarjeta
-                    productCard.insertBefore(img, productCard.firstChild);
-
-                    fragment.appendChild(productCard);
+                    fragment.appendChild(createProductCard(product)); // Agregar tarjeta de producto al fragmento
                 });
 
                 productosContainer.appendChild(fragment);
                 currentCount += loadCount;
 
                 // Ocultar el botón "Cargar más" si no hay más productos
-                if (currentCount >= data.data.length) {
+                if (currentCount >= productosArray.length) {
                     document.getElementById('load-more').style.display = 'none';
                 }
             } else {
-                console.error('Error cargando productos:', data);
+                console.log("No hay productos disponibles.");
             }
         })
         .catch(error => {
-            console.error('Error en la solicitud de productos:', error);
+            console.error('Error al cargar los productos desde Firebase:', error);
         });
+}
+
+// Función para mostrar productos en la interfaz
+function displayProducts(products) {
+    const productosContainer = document.getElementById('productos');
+    productosContainer.innerHTML = ''; // Limpiar contenido anterior
+    const fragment = document.createDocumentFragment();
+
+    products.forEach(product => {
+        fragment.appendChild(createProductCard(product));
+    });
+
+    productosContainer.appendChild(fragment);
 }
 
 // Configuración del evento al cargar la página
@@ -98,21 +160,3 @@ showSlide(slideIndex);
 document.querySelector('.logo img').addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
-
-// Inicializar Firebase
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCe9ZTmURGvpXTSiojgFPW5fXm2UcAocRs",
-  authDomain: "ferrem-web.firebaseapp.com",
-  projectId: "ferrem-web",
-  storageBucket: "ferrem-web.appspot.com",
-  messagingSenderId: "404367969906",
-  appId: "1:404367969906:web:86eb3e2fb6ebd4da2dbceb",
-  measurementId: "G-2T48Z2VLZC"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);

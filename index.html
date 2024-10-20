@@ -43,6 +43,31 @@
             display: block;
         }
     </style>
+    <!-- Agrega los scripts de Firebase desde el CDN -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js";
+        import { getDatabase } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"; // Importa el módulo de la base de datos
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyBmTijJCeuv1tKKJcrwWGoC6VR3vMXIRKY",
+            authDomain: "cloud-ferremweb.firebaseapp.com",
+            projectId: "cloud-ferremweb",
+            storageBucket: "cloud-ferremweb.appspot.com",
+            messagingSenderId: "198765237780",
+            appId: "1:198765237780:web:5a3db5b9417165726cf901",
+            measurementId: "G-3DEL1LR592"
+        };
+    
+        // Inicializa Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getDatabase(app); // Inicializar la base de datos
+    
+        // Exporta la instancia de la app y la base de datos
+        export { app, db };
+    </script>   
+
 </head>
 
 <body>
@@ -137,8 +162,6 @@
     <section id="catalogo">
         <h2>Catálogo de Productos</h2>
         <div class="productos-grid" id="productos"></div>
-
-        <!-- Botón para cargar más productos -->
         <div class="centered-div">
             <button id="load-more" class="load-more-button">Mostrar más productos</button>
         </div>
@@ -158,7 +181,8 @@
     </a>
 
     <!-- Coloca el script externo aquí, justo antes de cerrar la etiqueta body -->
-    <script src="./js/scripts.js"></script>
+    <script type="module" src="./js/scripts.js"></script>
 
 </body>
+
 </html>
